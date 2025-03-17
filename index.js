@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import doctorRoutes from "./routes/doctor.routes.js"
 import patientRoutes from "./routes/patient.routes.js"
 import appointmentRoutes from "./routes/appointment.routes.js"
+import authRoutes from "./routes/auth.routes.js"
 
 
 import "dotenv/config";
@@ -25,6 +26,7 @@ app.use(express.json())
 app.use("/doctor",doctorRoutes)
 app.use("/patient", patientRoutes)
 app.use("/appointment",appointmentRoutes )
+app.use("/auth", authRoutes)
 
 app.listen(PORT, async () =>{
     await connectDB()

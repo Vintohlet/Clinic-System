@@ -2,8 +2,8 @@ import { Patient } from "../models/Patient.js"
 class PatientController{
 async create (req,res){
     try {
-        const {patientName, age } = req.body;
-        const patient = await new Patient({patientName, age}).save();
+        const {patientName, age, email } = req.body;
+        const patient = await new Patient({patientName, age, email}).save();
         res.status(201).json(patient)
     } catch (error) {
         res.status(500).json({error: error.message})

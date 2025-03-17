@@ -8,8 +8,7 @@ const specializationSchema = new mongoose.Schema({
     experience:{
         type: Number,
         required: true,
-        min: 0
-    }
+        min: 0 }
 },{
     _id: false
 })
@@ -20,9 +19,19 @@ const doctorSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    email:{
+        type:String,
+        required: true, 
+        trim: true
+    },
     speciality:{
         type: specializationSchema,
         required: true
+    },
+    password:{
+        type: String,
+        required:true,
+        trim:true
     }
 
 })

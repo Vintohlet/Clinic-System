@@ -2,8 +2,8 @@ import { Doctor } from "../models/Doctor.js"
 class DoctorController{
 async create (req,res){
     try {
-        const {doctorName, speciality,experience } = req.body;
-        const doctor = await new Doctor({doctorName, speciality:{ speciality, experience}}).save();
+        const {doctorName, speciality,email, experience } = req.body;
+        const doctor = await new Doctor({doctorName, email,speciality:{ speciality, experience}}).save();
         res.status(201).json(doctor)
     } catch (error) {
         res.status(500).json({error: error.message})

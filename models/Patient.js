@@ -11,6 +11,15 @@ const patientSchema = new mongoose.Schema({
         required:true,
         min: 0
     },
+    email:{
+        type: String,
+        required: true,
+        trim: true
+    },
+    password:{
+        type: String,
+        required:true
+    },
     appointments:{
           type: [mongoose.Schema.Types.ObjectId],
           ref: "Appointment"
