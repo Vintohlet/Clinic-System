@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-
+import "dotenv/config";
 export function authUser(req,res,next) {
     const authHeader = req.headers.authorization;
     if(!authHeader){
@@ -9,7 +9,7 @@ export function authUser(req,res,next) {
     console.log("Extracted Token:", token);
     try {
         console.log("Decoded Token:", jwt.decode(token));
-        const decoded = jwt.verify(token, "secretkey");
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
         req.userId = decoded.userId;
         next();
     } catch (error) {

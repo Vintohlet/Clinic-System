@@ -1,6 +1,7 @@
 import { Patient } from "../models/Patient.js";
 import { Doctor } from "../models/Doctor.js";
 import jwt from "jsonwebtoken";
+import "dotenv/config";
 import { hashPassword, checkValidPassword } from "../services/bcrypt.js";
 
 class AuthController {
@@ -54,7 +55,7 @@ class AuthController {
       if (!passwordIsValid){
         return res.status(404).json({ message: "Invalid email or password" });
       }
-      const token = jwt.sign({userId: user._id},"secretkey",{expiresIn:"12h"})
+      const token = jwt.sign({userId: user._id},process.env.SECRET_KEY,{expiresIn:"12h"})
       res.json({token})
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -71,7 +72,7 @@ class AuthController {
       if (!passwordIsValid){
         return res.status(404).json({ message: "Invalid email or password" });
       }
-      const token = jwt.sign({userId: doctor._id},"secretkey",{expiresIn:"12h"})
+      const token = jwt.sign({userId: doctor._id},process.env.SECRET_KEY,{expiresIn:"12h"})
       res.json({token})
     } catch (error) {
       res.status(500).json({ error: error.message });

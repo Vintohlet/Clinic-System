@@ -8,4 +8,4 @@ router.get("/:id",authUser,AppointmentController.getAppointmentById)
 router.delete("/:id",authUser,AppointmentController.deleteAppointmentById)
 router.put("/:id",authUser,AppointmentController.updateAppointmentById)
 
-export default routerg
+export default router
