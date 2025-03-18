@@ -1,15 +1,15 @@
 import { Appointment } from "../models/Appointment.js";
-import { Patient } from "../models/Patient.js";
+import { User } from "../models/User.js";
 class AppointmentController {
   async create(req, res) {
     try {
-      const { appointmentTime, doctor, patient } = req.body;
+      const { appointmentTime, doctorId, patientId } = req.body;
       const appointment = await new Appointment({
         appointmentTime,
         doctor,
         patient,
       }).save();
-      const patientUpdate = await Patient.findByIdAndUpdate(patient, {
+      const patientUpdate = await User.findByIdAndUpdate(patientId, {
         $push: { appointments: appointment._id },
       });
       if (!patientUpdate) {
@@ -24,9 +24,9 @@ class AppointmentController {
   }
   async getAppointmentById(req, res) {
     try {
-      const appointment = await Appointment.findById(req.params.id).populate(
-        "doctor"
-      ).populate("patient");
+      const appointment = await Appointment.findById(req.params.id)
+        .populate("doctor")
+        .populate("patient");
       if (!appointment) {
         throw new Error("Appointment not found");
       }
@@ -54,7 +54,7 @@ class AppointmentController {
       }
       await Appointment.findByIdAndDelete(req.params.id);
       const { patient } = appointment;
-      const patientUpdate = await Patient.findByIdAndUpdate(patient, {
+      const patientUpdate = await User.findByIdAndUpdate(patient, {
         $pull: { appointments: appointment._id },
       });
       if (!patientUpdate) {

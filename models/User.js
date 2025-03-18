@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const patientSchema = new mongoose.Schema({
-    patientName: {
+const userSchema = new mongoose.Schema({
+    userName: {
         type: String,
         required: true,
         trim: true
@@ -26,4 +26,4 @@ const patientSchema = new mongoose.Schema({
     }
 })
 
-export const Patient = mongoose.model("Patient", patientSchema)
+export const User = mongoose.model("User", userSchema)
