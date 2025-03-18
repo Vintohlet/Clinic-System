@@ -7,7 +7,7 @@ import { hashPassword, checkValidPassword } from "../services/bcrypt.js";
 class AuthController {
   async userRegister(req, res) {
     try {
-      const { userName, age, email, password } = req.body;
+      const { userName, age, email, password, isManager } = req.body;
       const user = await User.findOne({ email });
       if (user) {
         return res.status(409).json({ message: "Email already taken" });
@@ -18,6 +18,7 @@ class AuthController {
         age,
         email,
         password: hashedPassword,
+        isManager
       }).save();
       res.status(201).json(patient);
     } catch (error) {
@@ -54,7 +55,7 @@ class AuthController {
       if (!passwordIsValid) {
         return res.status(404).json({ message: "Invalid email or password" });
       }
-      const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      const token = jwt.sign({ userId: user._id, isManager: user.isManager }, process.env.SECRET_KEY, {
         expiresIn: "12h",
       });
       res.json({ token });

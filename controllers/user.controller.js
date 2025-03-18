@@ -2,8 +2,8 @@ import { User } from "../models/User.js"
 class UserController{
 async create (req,res){
     try {
-        const {userName, age, email } = req.body;
-        const user = await new User({userName, age, email}).save();
+        const {userName, age, email, isManager } = req.body;
+        const user = await new User({userName, age, email, isManager}).save();
         res.status(201).json(user)
     } catch (error) {
         res.status(500).json({error: error.message})
@@ -62,6 +62,14 @@ try {
 } catch (error) {
     res.status(500).json({error:error.message})
 }
+}
+async getMe(req,res){
+    try {
+        const user = await User.findById(req.userId)
+        res.json(user)
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
 }
 }
 export default  new UserController();

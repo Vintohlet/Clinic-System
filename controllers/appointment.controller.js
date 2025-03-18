@@ -6,8 +6,8 @@ class AppointmentController {
       const { appointmentTime, doctorId, patientId } = req.body;
       const appointment = await new Appointment({
         appointmentTime,
-        doctor,
-        patient,
+        doctorId,
+        patientId,
       }).save();
       const patientUpdate = await User.findByIdAndUpdate(patientId, {
         $push: { appointments: appointment._id },

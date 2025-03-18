@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
     appointments:{
           type: [mongoose.Schema.Types.ObjectId],
           ref: "Appointment"
+    },
+    isManager:{
+        type: Boolean,
+        required: true,
+        default:false
     }
 })
 
