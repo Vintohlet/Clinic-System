@@ -1,9 +1,18 @@
 import { Appointment } from "../models/Appointment.js";
 import { User } from "../models/User.js";
+import { Doctor } from "../models/Doctor.js";
 class AppointmentController {
   async create(req, res) {
     try {
       const { appointmentTime, doctorId, patientId } = req.body;
+      const patient = await User.findById(patientId);
+      const doctor = await Doctor.findById(doctorId);
+      if(!patient){
+        return res.status(404).json({ message: "Patient not found!" });
+      }
+      if(!doctor){
+        return res.status(404).json({ message: "Doctor not found!" });
+      }
       const appointment = await new Appointment({
         appointmentTime,
         doctorId,
@@ -17,7 +26,7 @@ class AppointmentController {
       }
       res
         .status(201)
-        .json({ message: `Patient ${patient} successfuly made appointment!` });
+        .json({ message: `Patient ${patientId} successfuly made appointment!` });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

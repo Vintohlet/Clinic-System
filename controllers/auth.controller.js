@@ -6,6 +6,7 @@ import { hashPassword, checkValidPassword } from "../services/bcrypt.js";
 
 class AuthController {
   async userRegister(req, res) {
+    console.time("RegistrationTime");
     try {
       const { userName, age, email, password, isManager } = req.body;
       const user = await User.findOne({ email });
@@ -24,6 +25,7 @@ class AuthController {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+    console.timeEnd("RegistrationTime");
   }
   async doctorRegister(req, res) {
     try {
