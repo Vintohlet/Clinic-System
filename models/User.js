@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    userName: {
+    firstName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    lastName: {
         type: String,
         required: true,
         trim: true
@@ -24,11 +29,6 @@ const userSchema = new mongoose.Schema({
           type: [mongoose.Schema.Types.ObjectId],
           ref: "Appointment"
     },
-    isManager:{
-        type: Boolean,
-        required: true,
-        default:false
-    }
 })
 
 export const User = mongoose.model("User", userSchema)

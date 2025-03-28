@@ -2,8 +2,8 @@ import { User } from "../models/User.js"
 class UserController{
 async create (req,res){
     try {
-        const {userName, age, email, isManager } = req.body;
-        const user = await new User({userName, age, email, isManager}).save();
+        const {firstName,lastName, age, email, isManager } = req.body;
+        const user = await new User({fisrName,lastName, age, email, isManager}).save();
         res.status(201).json(user)
     } catch (error) {
         res.status(500).json({error: error.message})
@@ -50,10 +50,13 @@ async deleteUserById(req,res){
 }
 async updateUserById(req,res){
 try {
-    const {userName, age} = req.body
+    const {firstName,lastName, email, password, age} = req.body
    const updatedUser =  await User.findByIdAndUpdate( req.params.id, {
-        userName,
-        age
+        firstName,
+        lastName,
+        age,
+        email,
+        password
     }, { new: true })
     if(!updatedUser){
         return res.status(404).json({ error: "User not found" });

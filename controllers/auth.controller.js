@@ -6,20 +6,19 @@ import { hashPassword, checkValidPassword } from "../services/bcrypt.js";
 
 class AuthController {
   async userRegister(req, res) {
-    console.time("RegistrationTime");
     try {
-      const { userName, age, email, password, isManager } = req.body;
+      const { firstName,lastName, age, email, password} = req.body;
       const user = await User.findOne({ email });
       if (user) {
         return res.status(409).json({ message: "Email already taken" });
       }
       const hashedPassword = await hashPassword(password);
       const patient = await new User({
-        userName,
+        firstName,
+        lastName,
         age,
         email,
         password: hashedPassword,
-        isManager
       }).save();
       res.status(201).json(patient);
     } catch (error) {
@@ -46,46 +45,35 @@ class AuthController {
       res.status(500).json({ error: error.message });
     }
   }
-  async userLogin(req, res) {
+  async login(req, res) {
     try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(404).json({ message: "Invalid email or password" });
-      }
-      const passwordIsValid = await checkValidPassword(password, user.password);
-      if (!passwordIsValid) {
-        return res.status(404).json({ message: "Invalid email or password" });
-      }
-      const token = jwt.sign({ userId: user._id, isManager: user.isManager }, process.env.SECRET_KEY, {
-        expiresIn: "12h",
-      });
-      res.json({ token });
+        const { email, password } = req.body;
+        let user = await User.findOne({ email });
+        let role = "user";
+        if (!user) {
+            user = await Doctor.findOne({ email });
+            role = "doctor";
+        }
+        if (!user) {
+            return res.status(404).json({ message: "Invalid email or password" });
+        }
+        const passwordIsValid = await checkValidPassword(password, user.password);
+        if (!passwordIsValid) {
+            return res.status(404).json({ message: "Invalid email or password" });
+        }
+
+
+        const token = jwt.sign(
+            { userId: user._id, role },
+            process.env.SECRET_KEY,
+            { expiresIn: "12h" }
+        );
+
+        res.json({ token, role });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  }
-  async doctorLogin(req, res) {
-    try {
-      const { email, password } = req.body;
-      const doctor = await Doctor.findOne({ email });
-      if (!doctor) {
-        return res.status(404).json({ message: "Invalid email or password" });
-      }
-      const passwordIsValid = await checkValidPassword(
-        password,
-        doctor.password
-      );
-      if (!passwordIsValid) {
-        return res.status(404).json({ message: "Invalid email or password" });
-      }
-      const token = jwt.sign({ userId: doctor._id }, process.env.SECRET_KEY, {
-        expiresIn: "12h",
-      });
-      res.json({ token });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  }
+}
+  
 }
 export default new AuthController();
