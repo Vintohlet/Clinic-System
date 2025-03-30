@@ -25,10 +25,11 @@ if (req.isManager) {
    return res.status(403).json({message:"Forbidden"}) 
 }
 }
-export function checkIsAdmin(req, res, next) {
-    if (req.isAdmin) {
+
+export function checkIsDoctor(req, res, next) {
+    if (req.role === "doctor") {
         next();
     } else {
-        return res.status(403).json({ message: "Forbidden: Only admin can perform this action" });
+        return res.status(403).json({ message: "Access denied. Only doctors can perform this action." });
     }
 }

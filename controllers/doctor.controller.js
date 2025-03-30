@@ -35,6 +35,18 @@ async getAllDoctors(req,res){
         res.status(500).json({error:error.message})
     }
 }
+async getDoctorBySpeciality(req,res){
+    try {
+        const { specialty } = req.query;
+        const filter = specialty ? { specialty } : {};
+        const doctors = await Doctor.find(filter);
+        if (!doctors.length) {
+            return res.status(404).json({ message: "No doctors found" });
+        }
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+}
 async deleteDoctorById(req,res){
     try {
       const doctor = await Doctor.findByIdAndDelete(
@@ -52,7 +64,7 @@ async updateDoctorById(req,res){
 try {
    const updatedDoctor =  await Doctor.findByIdAndUpdate( req.body.id, {
         doctorName,
-        age
+        speciality
     }, { new: true })
     if(!updatedDoctor){
         return res.status(404).json({ error: "Doctor not found" });

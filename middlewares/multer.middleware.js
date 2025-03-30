@@ -8,7 +8,7 @@ function generateFilename(originalname) {
 }
 function fileFilter(req,file, callback){
 
-        if(file.mimetype.includes("image")){
+        if(file.mimetype.includes("application/pdf")){
             callback(null, true)
         }
         else{

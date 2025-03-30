@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const appointmentSchema = new mongoose.Schema({
     appointmentTime: {
-        type: String,
+        type: Date,
         required: true,
         trim: true
     },
@@ -13,7 +13,11 @@ const appointmentSchema = new mongoose.Schema({
     patientId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Patient"
-    }
+    },
+    appointmentFiles:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:"File"
+    },
 })
 
 export const Appointment = mongoose.model("Appointment", appointmentSchema)

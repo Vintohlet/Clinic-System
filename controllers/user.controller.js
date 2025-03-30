@@ -3,7 +3,7 @@ class UserController{
 async create (req,res){
     try {
         const {firstName,lastName, age, email, isManager } = req.body;
-        const user = await new User({fisrName,lastName, age, email, isManager}).save();
+        const user = await new User({firstName,lastName, age, email, isManager}).save();
         res.status(201).json(user)
     } catch (error) {
         res.status(500).json({error: error.message})

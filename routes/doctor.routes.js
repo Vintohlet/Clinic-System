@@ -8,6 +8,6 @@ router.post("/",authUser, checkIsManager,DoctorController.create);
 router.get("/",authUser,DoctorController.getAllDoctors);
 router.get("/:id",authUser,DoctorController.getDoctorsById)
 router.delete("/:id",authUser, checkIsManager, DoctorController.deleteDoctorById)
-router.put("/:id",authUser, checkIsManager, DoctorController.updateDoctorById)
+router.patch("/:id",authUser, checkIsManager, DoctorController.updateDoctorById)
 
 export default router
