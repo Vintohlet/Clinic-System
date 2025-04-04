@@ -6,6 +6,7 @@ import appointmentRoutes from "./routes/appointment.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import fileRoutes from "./routes/file.routes.js"
 import cors from "cors"
+import { setupSwagger } from "./swagger.js"
 import "dotenv/config";
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const connectionString = `mongodb+srv://ruslan:${DB_PASSWORD}@cluster0.hpt8o.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0`
@@ -31,6 +32,7 @@ app.use("/auth", authRoutes)
 app.use("/files",fileRoutes)
 
 app.listen(PORT, async () =>{
-    await connectDB()
+    await connectDB();
+    setupSwagger(app)
     console.log(`Server on http://localhost:${PORT}`)
 })

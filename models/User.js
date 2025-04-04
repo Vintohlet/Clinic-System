@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
           type: [mongoose.Schema.Types.ObjectId],
           ref: "Appointment"
     },
+    isManager:{
+        type: Boolean
+    }
 })
 
 export const User = mongoose.model("User", userSchema)
