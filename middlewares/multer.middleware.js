@@ -15,12 +15,4 @@ function fileFilter(req,file, callback){
             callback(null, false)
         }
 }
-const storage = multer.diskStorage({
-    destination:(req,file, callback) => {
-        callback(null, "uploads/")
-    },
-    filename: (req,file, callback) =>{
-        callback(null, generateFilename(file.originalname));
-    }
-})
-export const upload = multer({storage: storage, fileFilter});
+export const upload = multer({storage: multer.memoryStorage(), fileFilter});

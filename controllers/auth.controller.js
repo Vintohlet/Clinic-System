@@ -37,7 +37,7 @@ class AuthController {
       const doctor = await new Doctor({
         doctorName,
         email,
-        speciality: { speciality, experience },
+        speciality,
         password: hashedPassword,
       }).save();
       res.status(201).json(doctor);

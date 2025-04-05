@@ -1,5 +1,6 @@
 import { File } from "../models/File.js";  
 import { Appointment } from "../models/Appointment.js";
+import GoogleCloudStorageService from "../services/file-storage.service.js"
 class FileController{
 async getAll(req,res) {
     try {
@@ -12,14 +13,29 @@ async getAll(req,res) {
        res.status(500).json({error: error.message})
     }
 }
+async getByAppointmentId(req, res) {
+    try {
+      const { appointmentId } = req.params;
+  
+      const files = await File.find({ appointmentId });
+  
+      if (!files || files.length === 0) {
+        return res.status(404).json({ message: "No files found for this appointment" });
+      }
+  
+      res.status(200).json(files);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 async create(req,res){
     try {
         const {name, appointmentId} = req.body;
         if (!req.file){
             return res.status(400).json({message: "You did not send file!"})   
         }
-        const {filename} = req.file;
-        const file = await new File({name, fileUrl: filename}).save();
+        const fileUrl = await GoogleCloudStorageService.uploadFile(req.file, "docs")
+        const file = await new File({name, fileUrl}).save();
         await Appointment.findByIdAndUpdate(appointmentId, {
             $push:{appointmentFiles:file._id}
         })
