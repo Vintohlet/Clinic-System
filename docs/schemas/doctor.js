@@ -27,11 +27,11 @@ const doctorSchema = {
                     example: 10
                 }
             },
-        password:{
-            type: "string",
-        }
-         
     }
+    ,password:{
+        type: "string",
+    }
+     
 }
 }
 export default doctorSchema
