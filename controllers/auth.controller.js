@@ -7,7 +7,7 @@ import { hashPassword, checkValidPassword } from "../services/bcrypt.js";
 class AuthController {
   async userRegister(req, res) {
     try {
-      const { firstName,lastName, age, email, password} = req.body;
+      const { firstName, lastName, age, email, password } = req.body;
       const user = await User.findOne({ email });
       if (user) {
         return res.status(409).json({ message: "Email already taken" });
@@ -47,33 +47,39 @@ class AuthController {
   }
   async login(req, res) {
     try {
-        const { email, password } = req.body;
-        let user = await User.findOne({ email });
-        let role = "user";
-        if (!user) {
-            user = await Doctor.findOne({ email });
-            role = "doctor";
-        }
-        if (!user) {
-            return res.status(404).json({ message: "Invalid email or password" });
-        }
-        const passwordIsValid = await checkValidPassword(password, user.password);
-        if (!passwordIsValid) {
-            return res.status(404).json({ message: "Invalid email or password" });
-        }
+      const { email, password } = req.body;
+      let user = await User.findOne({ email });
+      let role = "user";
+      let isManager = false;
 
+      if (!user) {
+        user = await Doctor.findOne({ email });
+        role = "doctor";
+      }
+      if (!user) {
+        return res.status(404).json({ message: "Invalid email or password" });
+      }
 
-        const token = jwt.sign(
-            { userId: user._id, role },
-            process.env.SECRET_KEY,
-            { expiresIn: "12h" }
-        );
+      if (user.isManager) {
+        role = "manager";
+        isManager = true;
+      }
 
-        res.json({ token, role });
+      const passwordIsValid = await checkValidPassword(password, user.password);
+      if (!passwordIsValid) {
+        return res.status(404).json({ message: "Invalid email or password" });
+      }
+
+      const token = jwt.sign(
+        { userId: user._id, role, isManager },
+        process.env.SECRET_KEY,
+        { expiresIn: "12h" }
+      );
+
+      res.json({ token, role, isManager });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
-}
-  
+  }
 }
 export default new AuthController();
