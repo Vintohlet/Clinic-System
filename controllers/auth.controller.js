@@ -78,8 +78,8 @@ class AuthController {
 
         res.cookie("accessToken", token, {
         httpOnly: true,
-        secure: false, 
-        sameSite: "lax",
+        secure: true, 
+        sameSite: "none",
         path: "/",
         maxAge: 1000 * 60 * 60 * 12, 
       });
