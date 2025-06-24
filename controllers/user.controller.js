@@ -66,13 +66,19 @@ try {
     res.status(500).json({error:error.message})
 }
 }
-async getMe(req,res){
-    try {
-        const user = await User.findById(req.userId)
-        res.json(user)
-    } catch (error) {
-        res.status(500).json({error:error.message})
-    }
+async getMe(req, res) {
+  try {
+    const user = await User.findById(req.userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({
+      user,
+      role: req.role,
+      isManager: req.isManager || false,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 }
 export default  new UserController();
