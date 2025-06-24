@@ -76,7 +76,26 @@ class AuthController {
         { expiresIn: "12h" }
       );
 
-      res.json({ token, role, isManager });
+        res.cookie("accessToken", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", 
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60 * 12, 
+      });
+      res.status(200).json({ role, isManager });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+    async logout(req, res) {
+    try {
+      res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/", 
+      });
+      res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

@@ -6,6 +6,7 @@ import appointmentRoutes from "./routes/appointment.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import fileRoutes from "./routes/file.routes.js"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 import { setupSwagger } from "./swagger.js"
 import "dotenv/config";
 const DB_PASSWORD = process.env.DB_PASSWORD;
@@ -24,6 +25,7 @@ const app = express();
 
 const PORT = 7777;
 app.use(cors())
+app.use(cookieParser())
 app.use(express.json()) 
 app.use("/doctor",doctorRoutes)
 app.use("/user", userRoutes)

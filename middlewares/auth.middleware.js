@@ -2,11 +2,11 @@ import jwt from "jsonwebtoken"
 import "dotenv/config";
 
 export function authUser(req,res,next) {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies.accessToken;
     if(!authHeader){
         return res.status(401).json({message:"Token is required!"})
     }
-    const token = authHeader.replace(/^Bearer\s/, "")
+   
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         req.userId = decoded.userId;
@@ -19,8 +19,8 @@ export function authUser(req,res,next) {
 }
 
 export function authenticateToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+
+   const token = req.cookies.accessToken;
 
     if (!token) {
         return res.status(401).json({ message: "Access token required" });
