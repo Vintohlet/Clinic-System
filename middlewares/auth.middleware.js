@@ -3,7 +3,7 @@ import "dotenv/config";
 
 export function authUser(req,res,next) {
     const token = req.cookies.accessToken;
-    if(!authHeader){
+    if(!token){
         return res.status(401).json({message:"Token is required!"})
     }
    
