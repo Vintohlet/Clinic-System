@@ -4,6 +4,7 @@ import "dotenv/config";
 export function authUser(req,res,next) {
     const token = req.cookies.accessToken;
     console.log("🍪 Куки:", req.headers.cookie);
+    console.log("🍪 parsed cookie:", req.cookies);
     
     if(!token){
         return res.status(401).json({message:"Token is required!"})
