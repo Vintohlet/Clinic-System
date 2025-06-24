@@ -78,7 +78,7 @@ class AuthController {
 
         res.cookie("accessToken", token, {
         httpOnly: true,
-        secure: true, 
+        secure: false, 
         sameSite: "lax",
         path: "/",
         maxAge: 1000 * 60 * 60 * 12, 
