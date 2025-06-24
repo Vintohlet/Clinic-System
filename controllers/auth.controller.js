@@ -80,6 +80,7 @@ class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", 
         sameSite: "lax",
+        path: "/",
         maxAge: 1000 * 60 * 60 * 12, 
       });
       res.status(200).json({ role, isManager });
