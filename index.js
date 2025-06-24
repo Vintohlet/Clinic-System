@@ -24,7 +24,10 @@ async function connectDB() {
 const app = express();
 
 const PORT = 7777;
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:3000", 
+  credentials: true,               
+}));
 app.use(cookieParser())
 app.use(express.json()) 
 app.use("/doctor",doctorRoutes)
